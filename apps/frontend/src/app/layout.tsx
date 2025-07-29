@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins, Ubuntu } from "next/font/google";
 import "./globals.css";
+import { QueryProvider } from "@/providers/query-provider";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -27,7 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${ubuntu.variable} antialiased`}>
-        {children}
+        <ErrorBoundary>
+          <QueryProvider>
+            {children}
+          </QueryProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );
