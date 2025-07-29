@@ -1,6 +1,4 @@
 "use client";
-
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,7 +10,6 @@ import {
   Settings, 
   Plus, 
   TrendingUp, 
-  TrendingDown, 
   DollarSign, 
   CreditCard, 
   Activity, 
@@ -26,7 +23,6 @@ import {
 } from "lucide-react";
 
 export default function DashboardPage() {
-  const [selectedPeriod, setSelectedPeriod] = useState("7d");
 
   const stats = [
     {
