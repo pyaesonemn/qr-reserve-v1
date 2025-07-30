@@ -2,20 +2,27 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Eye, EyeOff, Mail, Lock, Building2 } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Building2, Loader2 } from "lucide-react";
+import { useLogin } from "@/hooks/use-auth";
+import { toast } from "sonner";
+import type { LoginData } from "@repo/types";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LoginData & { rememberMe: boolean }>({
     email: "",
     password: "",
     rememberMe: false
   });
+  
+  const loginMutation = useLogin();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -25,10 +32,30 @@ export default function LoginPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login data:", formData);
+    
+    try {
+      await loginMutation.mutateAsync({
+        email: formData.email,
+        password: formData.password
+      });
+      
+      toast.success("Login successful! Welcome back.");
+      router.push("/dashboard"); // Redirect to dashboard after successful login
+    } catch (error: unknown) {
+      let errorMessage = "Login failed. Please try again.";
+      
+      if (error && typeof error === 'object') {
+        if ('response' in error && error.response && typeof error.response === 'object' && 'data' in error.response && error.response.data && typeof error.response.data === 'object' && 'message' in error.response.data && typeof error.response.data.message === 'string') {
+          errorMessage = error.response.data.message;
+        } else if ('message' in error && typeof error.message === 'string') {
+          errorMessage = error.message;
+        }
+      }
+      
+      toast.error(errorMessage);
+    }
   };
 
   return (
@@ -117,9 +144,17 @@ export default function LoginPage() {
 
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2.5 transition-all duration-200 shadow-lg hover:shadow-xl"
+                disabled={loginMutation.isPending}
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2.5 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Sign In
+                {loginMutation.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing In...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
               </Button>
             </form>
 

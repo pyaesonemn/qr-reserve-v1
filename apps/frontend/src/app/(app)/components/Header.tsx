@@ -1,6 +1,11 @@
+"use client";
+
+import { useUser } from "@/hooks/use-auth";
 import { BellIcon } from "lucide-react";
 
 const Header = () => {
+  const { data: user } = useUser();
+  console.log({ user });
   return (
     <div className="flex flex-row justify-between items-center">
       <h1 className="text-neutral-900 font-poppins text-xl font-medium">

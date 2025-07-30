@@ -5,17 +5,18 @@ import {
   ListMinusIcon,
   ChartPieIcon,
 } from "lucide-react";
+import Link from "next/link";
 
 const sidebarMenus = [
   {
     name: "Dashboard",
     icon: HouseIcon,
-    path: "/dashboard",
+    path: "/new-dashboard",
   },
   {
     name: "Session",
     icon: BriefcaseBusinessIcon,
-    path: "/session",
+    path: "/new-session",
   },
   {
     name: "Bookings",
@@ -42,7 +43,8 @@ const NavigationBox = () => {
       </div>
       <div>
         {sidebarMenus.map((menu) => (
-          <div
+          <Link
+            href={menu.path}
             key={menu.name}
             className="group hover:cursor-pointer last:mb-0 mb-2 py-1 p-1 rounded-4xl hover:bg-neutral-200/20 flex flex-row items-center gap-x-4"
           >
@@ -52,7 +54,7 @@ const NavigationBox = () => {
             <span className="text-white text-base font-poppins font-normal">
               {menu.name}
             </span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

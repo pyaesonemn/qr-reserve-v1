@@ -79,6 +79,29 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get current authenticated user' })
+  @ApiResponse({
+    status: 200,
+    description: 'Current user retrieved successfully',
+    type: UserResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - Invalid or missing token',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
+  async getCurrentUser(
+    @Request() req: AuthenticatedRequest,
+  ): Promise<UserResponseDto> {
+    return this.authService.getProfile(req.user.id);
+  }
+
   @Get('profile')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
