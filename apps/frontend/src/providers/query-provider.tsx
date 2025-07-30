@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useAuthEventListener } from '@/hooks/use-auth';
-import { env } from '@/lib/env';
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useAuthEventListener } from "@/hooks/use-auth";
+import { env } from "@/lib/env";
 
 interface QueryProviderProps {
   children: React.ReactNode;
@@ -38,7 +38,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
     <QueryClientProvider client={queryClient}>
       <AuthEventHandler />
       {children}
-      {env.NODE_ENV === 'development' && (
+      {env.NODE_ENV === "development" && (
         <ReactQueryDevtools initialIsOpen={false} />
       )}
     </QueryClientProvider>

@@ -61,12 +61,12 @@ async function refreshAccessToken(): Promise<string | null> {
         // Refresh token is invalid, clear tokens
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        
+
         // Trigger a custom event to notify components about auth failure
         if (typeof window !== "undefined") {
           window.dispatchEvent(new CustomEvent("auth:token-expired"));
         }
-        
+
         return null;
       }
 
@@ -78,12 +78,12 @@ async function refreshAccessToken(): Promise<string | null> {
       console.error("Token refresh failed:", error);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      
+
       // Trigger a custom event to notify components about auth failure
       if (typeof window !== "undefined") {
         window.dispatchEvent(new CustomEvent("auth:token-expired"));
       }
-      
+
       return null;
     } finally {
       isRefreshing = false;
@@ -103,7 +103,7 @@ async function clientApiRequest<T>(
   try {
     // Get access token from localStorage
     const accessToken = localStorage.getItem("accessToken");
-    
+
     const response = await fetch(`${env.API_BASE_URL}${endpoint}`, {
       headers: {
         "Content-Type": "application/json",

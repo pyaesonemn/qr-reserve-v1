@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins, Ubuntu } from "next/font/google";
 import "./globals.css";
-<<<<<<< Updated upstream
-=======
 import { QueryProvider } from "@/providers/query-provider";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { Toaster } from "sonner";
->>>>>>> Stashed changes
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -33,16 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${ubuntu.variable} antialiased`}>
-<<<<<<< Updated upstream
-        {children}
-=======
         <ErrorBoundary>
-          <QueryProvider>
-            {children}
-          </QueryProvider>
+          <QueryProvider>{children}</QueryProvider>
         </ErrorBoundary>
         <Toaster position="top-right" richColors />
->>>>>>> Stashed changes
       </body>
     </html>
   );

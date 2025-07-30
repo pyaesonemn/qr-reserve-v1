@@ -22,7 +22,7 @@ export function useAuthEventListener() {
     };
 
     window.addEventListener("auth:token-expired", handleTokenExpired);
-    
+
     return () => {
       window.removeEventListener("auth:token-expired", handleTokenExpired);
     };
@@ -37,11 +37,11 @@ export function useUser(initialData?: User) {
       // Check if we have tokens before making the request
       const accessToken = localStorage.getItem("accessToken");
       const refreshToken = localStorage.getItem("refreshToken");
-      
+
       if (!accessToken && !refreshToken) {
         throw new Error("No authentication tokens available");
       }
-      
+
       return clientApi.get<User>("/auth/me");
     },
     initialData,
@@ -111,11 +111,11 @@ export function clearAuthData(queryClient: ReturnType<typeof useQueryClient>) {
   // Clear tokens
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
-  
+
   // Clear auth-related queries
   queryClient.removeQueries({ queryKey: queryKeys.auth.user() });
   queryClient.removeQueries({ queryKey: queryKeys.auth.profile() });
-  
+
   // Optionally clear all cached data
   queryClient.clear();
 }
